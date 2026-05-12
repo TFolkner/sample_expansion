@@ -1,11 +1,15 @@
-clear clc %% macros ================================================================= 
+clear 
+clc 
+
+%% macros =================================================================
+macros.make_demo = 0;
 
 %% init data ============================================================== 
 data_folder = "../run/"; 
 sFile_data_sample_xls = data_folder + "sample_data.xlsx"; 
 
 %% make test sample ======================================================= 
-if (0) 
+if (macros.make_demo == 1) 
     try 
         subjects_values = 10; 
         answers_values = 30; 
@@ -67,3 +71,33 @@ end
 
 
 
+% shuffle data
+for i = 1:work_data.default_result (2) 
+    to_shuffle = work_data.new_data(:, i);
+    work_data.new_data_shuffle(:, i) = to_shuffle(randperm(length(to_shuffle)));
+end
+
+
+%% plot
+% плотность частот
+% to_plot = work_data.new_data_shuffle(:, 1);
+% xx = linspace (min(to_plot), max(to_plot), length(to_plot));
+% yy = normpdf (xx, mean(to_plot), std(xx));
+% 
+% F1 = figure;
+% histogram(to_plot, 15, 'Normalization', 'pdf')
+% hold on
+% plot(xx, yy, 'LineWidth', 2)
+
+
+figure;
+for i = 1:work_data.default_result (2)
+    subplot (5, 5, i)
+    to_plot = work_data.new_data_shuffle(:, i);
+    xx = linspace (min(to_plot), max(to_plot), length(to_plot));
+    yy = normpdf (xx, mean(to_plot), std(xx));
+
+    histogram(work_data.new_data_shuffle(:, i), 10, 'Normalization', 'pdf')
+    hold on
+    plot(xx, yy, 'LineWidth', 2)
+end
